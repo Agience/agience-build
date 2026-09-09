@@ -12,7 +12,7 @@ Two surfaces sweep together: the tree's prose, and the Claude memory for the sam
 
 ## ⛔ Where this pass does NOT apply
 
-**`agience-pharos/status/` and `agience-pharos/genesis/` are exempt from the deletions below.**
+**`agience-pharos/status/` and `agience-pharos/design/` are exempt from the deletions below.**
 
 Those trees are *built* on dated, attributed, provenance-marked claims. `status/README.md` requires
 every claim to carry ⚑ *measured in this pass*, 📄 *read out of a named source*, or ⚠ *unverified but
