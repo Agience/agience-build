@@ -73,3 +73,6 @@ Desktop.ini
 .AGENTS/COORDINATION.md
 .ruff_cache/
 .vscode/
+# The active workspace file lives at vscode/. A root copy is transitional: two tracked
+# copies of one workspace drift, and the paths differ by depth.
+/agience-all.code-workspace
