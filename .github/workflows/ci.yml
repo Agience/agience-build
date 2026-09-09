@@ -1,0 +1,84 @@
+name: ci
+
+# This repository ships no product code: skills and hooks that assistants read, the scripts that
+# install them, and the editor views. So the suite is small and the thing it protects is narrow —
+# `doc_sweep.py` decides which prose a mechanical pass may edit, and a wrong answer there edits a
+# document nobody asked it to touch.
+#
+# There is no `publish.yml` beside this one. Nothing here is distributed as a package; the scripts
+# are run from a checkout and installed to `~/.claude/` by `install_agent_env.py`.
+on:
+  push:
+    branches: [main]
+  pull_request: {}
+  workflow_dispatch: {}
+
+jobs:
+  suite:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      # No dependency install beyond pytest. The scripts here are deliberately stdlib-only: they run
+      # against a workspace that may have no virtualenv active, and `fleet_guard.py` in particular
+      # has to work when the tree it is inspecting is mid-edit. A dependency added to any of them
+      # will fail HERE first, which is the point.
+      - run: python -m pip install --upgrade pip pytest
+      - name: Run the suite
+        run: python -m pytest -q
+
+  # The hooks are the half with no test coverage — they run inside a live assistant session against
+  # a running store, which CI has neither of. Import is therefore the only claim this job makes, and
+  # it is worth making: every hook imports `mantle_common`, so a syntax error or a bad top-level
+  # import there takes out the whole capture layer at once, silently, in every session.
+  hooks-import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Every hook imports
+        run: |
+          python - <<'PY'
+          import importlib.util, pathlib, sys
+
+          # The hooks are installed side by side into `~/.claude/hooks/` and run from there, so
+          # `import mantle_common` resolves as a sibling. Loading them from the repository root
+          # without this reports a ModuleNotFoundError that no real invocation would ever hit.
+          sys.path.insert(0, str(pathlib.Path("hooks").resolve()))
+
+          failed = []
+          for f in sorted(pathlib.Path("hooks").glob("*.py")):
+              spec = importlib.util.spec_from_file_location(f"hook_{f.stem}", f)
+              module = importlib.util.module_from_spec(spec)
+              try:
+                  spec.loader.exec_module(module)
+              except Exception as exc:
+                  print(f"::error file={f}::failed to import: {exc.__class__.__name__}: {exc}")
+                  failed.append(f.name)
+          print(f"{len(failed)} of {len(list(pathlib.Path('hooks').glob('*.py')))} hooks failed to import")
+          raise SystemExit(1 if failed else 0)
+          PY
+
+  # `mcp_config.py` and `doc_sweep.py` both report by default and write only behind a flag. A change
+  # that inverts that writes into every repo in a workspace on what the author expected to be a
+  # dry run, so the default is checked rather than trusted.
+  reports-by-default:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: A bare run changes nothing
+        run: |
+          python scripts/doc_sweep.py >/dev/null 2>&1 || true
+          python scripts/mcp_config.py >/dev/null 2>&1 || true
+          if ! git diff --quiet || [ -n "$(git status --porcelain)" ]; then
+            echo "::error::a script with no flags modified the tree"
+            git status --porcelain
+            exit 1
+          fi

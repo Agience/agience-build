@@ -1,0 +1,57 @@
+{
+  "folders": [
+    {
+      "name": "agience-build",
+      "path": ".."
+    },
+    {
+      "name": "agience-observe",
+      "path": "../../agience-observe"
+    },
+    {
+      "name": "agience-pharos",
+      "path": "../../agience-pharos"
+    },
+    {
+      "name": "agience-cloud",
+      "path": "../../agience-cloud"
+    },
+    {
+      "name": "agience-origin",
+      "path": "../../agience-origin"
+    },
+    {
+      "name": "agience-mantle",
+      "path": "../../agience-mantle"
+    },
+    {
+      "name": "agience-chorus",
+      "path": "../../agience-chorus"
+    },
+    {
+      "name": "agience-crystal",
+      "path": "../../agience-crystal"
+    },
+    {
+      "name": "agience-ember",
+      "path": "../../agience-ember"
+    },
+    {
+      "name": "agience-prism",
+      "path": "../../agience-prism"
+    },
+    {
+      "name": "_fleet",
+      "path": "../../_fleet"
+    },
+    {
+      "name": "_scratch",
+      "path": "../../_scratch"
+    },
+    {
+      "name": "_archive",
+      "path": "../../_archive"
+    }
+  ],
+  "settings": {}
+}
