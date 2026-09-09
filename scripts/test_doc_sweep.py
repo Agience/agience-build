@@ -290,21 +290,31 @@ def test_a_file_with_a_bom_is_read_not_skipped(tmp_path):
 
 
 def test_the_published_canon_is_never_walked(tmp_path):
-    """`status/` and `genesis/` are built on the provenance markers this tool strips.
+    """The two pharos trees that keep the exemption, and the rest of pharos that no longer does.
 
-    Pointed at the workspace root the tool would otherwise sweep canon, which is exempt from these
-    deletions and is LEDGER-gated besides. Pinned here because the exemption is invisible at the
-    call site: nothing about `doc_sweep.py ..` says which trees it will open.
+    Narrowed 2026-09-09. Pharos was excluded whole because of `status/`, whose every claim carried a
+    provenance marker this tool strips. That tree left the repository in the public prune and the
+    exclusion outlived it. What still earns exemption earns it on its own terms: `research/`, where
+    a `[MEASURED]` / `[HYPOTHESIS]` tag is the difference between a result and a bet, and `learn/`,
+    which is generated — sweeping it edits an artifact whose source is elsewhere, and the next
+    rebuild reverts the sweep without saying so.
+
+    Pinned because the exemption is invisible at the call site: nothing about `doc_sweep.py ..`
+    says which trees it will open.
     """
-    canon = tmp_path / "agience-pharos" / "status"
-    canon.mkdir(parents=True)
-    (canon / "AUDIT.md").write_text("⚑ Measured 2026-08-25 — a claim.\n", encoding="utf-8")
+    claim = "⚑ Measured 2026-08-25 — a claim.\n"
+    ph = tmp_path / "agience-pharos"
+    for tree in ("research", "learn", "design"):
+        (ph / tree).mkdir(parents=True)
+        (ph / tree / "DOC.md").write_text(claim, encoding="utf-8")
     other = tmp_path / "agience-mantle"
     other.mkdir()
-    (other / "README.md").write_text("⚑ Measured 2026-08-25 — a claim.\n", encoding="utf-8")
+    (other / "README.md").write_text(claim, encoding="utf-8")
 
-    walked = [str(p) for p in sweep.walk([str(tmp_path)])]
-    assert not any("agience-pharos" in p for p in walked), "canon was walked: %s" % walked
+    walked = [str(p).replace("\\", "/") for p in sweep.walk([str(tmp_path)])]
+    assert not any("agience-pharos/research" in p for p in walked), "research/ was walked: %s" % walked
+    assert not any("agience-pharos/learn" in p for p in walked), "learn/ was walked: %s" % walked
+    assert any("agience-pharos/design" in p for p in walked), "the narrowing did not take effect"
     assert any("agience-mantle" in p for p in walked), "the sweep walked nothing at all"
 
 
@@ -369,7 +379,7 @@ def test_an_escaped_quote_does_not_swallow_the_rest_of_the_file():
 
 def test_a_named_file_in_the_canon_is_refused_not_swept(tmp_path):
     """A path on the command line reaches the same exclusions as one the walk discovered."""
-    canon = tmp_path / "agience-pharos" / "status"
+    canon = tmp_path / "agience-pharos" / "research"
     canon.mkdir(parents=True)
     doc = canon / "CURRENT.md"
     doc.write_text("\u26d4 MEASURED 2026-08-25.\n", encoding="utf-8")
@@ -468,3 +478,13 @@ def test_a_flag_in_a_markdown_line_keeps_its_own_number():
     src = "one\ntwo\nTHIS SHOUTS LOUDLY\nfour\n"
     _out, flagged = sweep.sweep_markdown(src)
     assert flagged == [(3, "caps", "THIS SHOUTS LOUDLY")], flagged
+
+
+def test_a_multi_segment_exclusion_cannot_hide_in_SKIP_DIRS():
+    """`SKIP_DIRS` is matched against single path components, so an entry containing "/" never
+    fires. Narrowing the pharos exclusion was written that way first and left every tree sweepable
+    — including `research/`, whose claim tags this tool would have stripped. Multi-segment
+    exclusions belong in `SKIP_PATHS`, and this is what says so out loud."""
+    assert not [d for d in sweep.SKIP_DIRS if "/" in d], (
+        "an entry with '/' in SKIP_DIRS matches nothing — move it to SKIP_PATHS")
+    assert all("/" in p for p in sweep.SKIP_PATHS), "SKIP_PATHS is for multi-segment paths"

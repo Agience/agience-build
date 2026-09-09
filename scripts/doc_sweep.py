@@ -106,18 +106,30 @@ SKIP_DIRS = {
     #: Lean's package tree under `entroptics-mass-gap/research/lean` — mathlib and its
     #: dependencies, vendored rather than written here.
     ".lake",
-    #: The published canon. `status/` and `genesis/` are built on dated, attributed,
-    #: provenance-marked claims and are exempt from the deletions this tool makes: `status/README.md`
-    #: requires every claim to carry a measured, read-from-source or unverified marker, and stripping
-    #: those destroys exactly the provenance the tree exists to carry. Canon is also LEDGER-gated, so
-    #: a prose edit without a ledger row puts the two out of step. Clean a document up in `_scratch`
-    #: before it is promoted, never after.
-    "agience-pharos",
+    #: `agience-pharos` WAS excluded whole. The reason was `status/` — a tree whose every claim had
+    #: to carry a measured / read-from-source / unverified marker, so stripping markers there
+    #: destroyed exactly the provenance it existed to carry. That tree left the repository in the
+    #: 2026-09-08 prune and the exclusion outlived it, which is why this is narrowed rather than
+    #: kept: pharos is now documentation for an external audience, and the internal register is
+    #: the thing a reader should not be reading.
+    #:
+    #: `research/` stays excluded on the ORIGINAL argument, which still holds there: its documents
+    #: carry a status tag on every claim — `[MEASURED]`, `[ESTABLISHED]`, `[HYPOTHESIS]`,
+    #: `[SPECULATION]` — and a tag is not decoration, it is the difference between a result and a
+    #: bet. `learn/` stays excluded because it is GENERATED: sweeping it edits an artifact whose
+    #: source is elsewhere, and the next rebuild silently reverts the sweep.
+    # (the two pharos trees are in SKIP_PATHS below — a "/" cannot match a path component)
     #: Key material. It has no `.git`, and that absence is the whole protection — a tool that
     #: rewrites files there has no business being pointed at it by accident.
     "_secret",
 }
 SKIP_NAMES = {"CLAUDE.md", "copilot-instructions.md"}
+
+#: Exclusions that are a PATH rather than a directory NAME. `SKIP_DIRS` is matched against single
+#: path components, so an entry containing "/" silently never fires — which is how narrowing the
+#: pharos exclusion first left every tree sweepable, including the two that must not be.
+#: Matched as a suffix of the parent directories, so it holds wherever the workspace is checked out.
+SKIP_PATHS = ("agience-pharos/research", "agience-pharos/learn")
 
 #: Files whose subject is the thing this tool removes, and which it therefore must not read as
 #: ordinary prose. `doc-current-state/SKILL.md` quotes a dated removal marker as an example of what
@@ -386,6 +398,10 @@ def excluded(path: str) -> str:
     hit = set(parts[:-1]) & SKIP_DIRS
     if hit:
         return "under %s" % sorted(hit)[0]
+    parent = "/".join(parts[:-1])
+    for sp in SKIP_PATHS:
+        if parent == sp or parent.endswith("/" + sp) or ("/" + sp + "/") in ("/" + parent + "/"):
+            return "under %s" % sp
     if any(posix.endswith(s) for s in SKIP_SUFFIXES):
         return "documents the patterns by showing them"
     return ""
