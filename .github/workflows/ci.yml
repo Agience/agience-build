@@ -73,10 +73,22 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      # Each script must be shown to have RUN before "the tree did not change" means anything — a
+      # script that dies on import changes nothing either, and `|| true` cannot tell the two apart.
+      # Neither exit code is usable as that signal: `doc_sweep.py` exits 2 when it has prose to
+      # report, which is its ordinary outcome. So the proof is the summary line each one prints.
       - name: A bare run changes nothing
         run: |
-          python scripts/doc_sweep.py >/dev/null 2>&1 || true
-          python scripts/mcp_config.py >/dev/null 2>&1 || true
+          # `doc_sweep.py` must be given a path. With no arguments it prints its usage and exits 2,
+          # having touched nothing — so a bare invocation here proved only that help text does not
+          # write to disk. It is pointed at this repository, which is real prose for it to walk.
+          set -o pipefail
+          python scripts/doc_sweep.py . 2>&1 | tee /tmp/sweep.out || true
+          python scripts/mcp_config.py 2>&1 | tee /tmp/mcp.out || true
+          grep -qE 'would touch [0-9]+ file' /tmp/sweep.out || {
+            echo "::error file=scripts/doc_sweep.py::did not run to completion — no summary line"; exit 1; }
+          grep -qE '[0-9]+ repo\(s\)' /tmp/mcp.out || {
+            echo "::error file=scripts/mcp_config.py::did not run to completion — no summary line"; exit 1; }
           if ! git diff --quiet || [ -n "$(git status --porcelain)" ]; then
             echo "::error::a script with no flags modified the tree"
             git status --porcelain

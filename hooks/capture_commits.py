@@ -59,12 +59,10 @@ OPERATOR = "op.git.commit"
 
 #: The repos whose commits are captured, derived from wherever the workspace actually is.
 #:
-#: A hardcoded absolute path here is a standing risk in the same shape found elsewhere in this
-#: workspace: four such paths under `Repos/agience-genesis/` stopped resolving to anything once
-#: that directory was dissolved in the workspace merge, so a hook built on them would walk an
-#: empty list and capture no commits at all — silently, because `_repos()` skips a path that is
-#: not a git repo and a hook that captures nothing looks exactly like a hook with nothing to
-#: capture.
+#: A hardcoded absolute path here is a standing risk, and the failure is silent: when the tree
+#: moves, a hook built on a fixed path walks an empty list and captures no commits at all —
+#: `_repos()` skips anything that is not a git repo, and a hook that captures nothing looks
+#: exactly like a hook with nothing to capture. Four such paths have already gone dead this way.
 #:
 #: Names, not paths, is the fix that keeps it fixed: `mantle_common.workspace_root()` finds the
 #: tree, and a workspace that moves again takes these with it. See that function for why a

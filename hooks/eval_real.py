@@ -25,10 +25,9 @@ import time
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from mantle_common import recall, workspace_root  # noqa: E402
 
-# BOTH OF THESE WERE DEAD ABSOLUTE PATHS — `Repos/agience-mantle/_scratch` and
-# `Repos/agience-genesis/agience-mantle`, neither of which has existed since the workspace merge
-# [found 2026-08-24]. This eval scored recall against files that were not there, which makes every
-# case it reports a measurement of nothing. Derived now; see `mantle_common.workspace_root`.
+# Both of these are derived rather than hardcoded. They were once absolute paths that went dead
+# when the tree moved, and the eval went on scoring recall against files that were not there —
+# which makes every case it reports a measurement of nothing. See `mantle_common.workspace_root`.
 _ROOT = workspace_root()
 SCRATCH = str(_ROOT / "_scratch") if _ROOT else ""
 REPO = str(_ROOT / "agience-mantle") if _ROOT else ""
