@@ -108,3 +108,10 @@ view enrols it.
 
 Licensed under Apache-2.0 — see [`LICENSE`](LICENSE) and [`NOTICE`](NOTICE). Contributions:
 [`CONTRIBUTING.md`](CONTRIBUTING.md).
+
+## Declaration of generative AI use
+
+The author used Anthropic's Claude Opus (versions 4.8 and 5) in the preparation of this work. Its
+contribution was to write code, and to generate and validate content. The ideas, the construction
+and the claims are the author's. No other generative AI tool was used. The author reviewed and
+edited all output and takes full responsibility for the content of this publication.

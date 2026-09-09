@@ -5,8 +5,8 @@
       "path": "../../entroptics"
     },
     {
-      "name": "entroptics-cut",
-      "path": "../../entroptics-cut"
+      "name": "entroptics-llm",
+      "path": "../../entroptics-llm"
     },
     {
       "name": "entroptics-jlens",

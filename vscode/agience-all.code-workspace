@@ -46,7 +46,7 @@
     },
     {
       "name": "entroptics-llm",
-      "path": "../../entroptics-cut"
+      "path": "../../entroptics-llm"
     },
     {
       "name": "entroptics-jlens",
