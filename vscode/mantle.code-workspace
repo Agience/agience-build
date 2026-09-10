@@ -27,18 +27,6 @@
     {
       "name": "agience-pharos",
       "path": "../../agience-pharos"
-    },
-    {
-      "name": "_fleet",
-      "path": "../../_fleet"
-    },
-    {
-      "name": "_scratch",
-      "path": "../../_scratch"
-    },
-    {
-      "name": "_archive",
-      "path": "../../_archive"
     }
   ],
   "settings": {}

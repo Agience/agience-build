@@ -39,18 +39,6 @@
     {
       "name": "agience-prism",
       "path": "../../agience-prism"
-    },
-    {
-      "name": "_fleet",
-      "path": "../../_fleet"
-    },
-    {
-      "name": "_scratch",
-      "path": "../../_scratch"
-    },
-    {
-      "name": "_archive",
-      "path": "../../_archive"
     }
   ],
   "settings": {}

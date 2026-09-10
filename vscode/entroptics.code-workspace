@@ -13,24 +13,8 @@
       "path": "../../entroptics-jlens"
     },
     {
-      "name": "entroptics-rf",
-      "path": "../../entroptics-rf"
-    },
-    {
       "name": "entroptics-mass-gap",
       "path": "../../entroptics-mass-gap"
-    },
-    {
-      "name": "_fleet",
-      "path": "../../_fleet"
-    },
-    {
-      "name": "_scratch",
-      "path": "../../_scratch"
-    },
-    {
-      "name": "_archive",
-      "path": "../../_archive"
     }
   ],
   "settings": {}
