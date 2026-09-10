@@ -45,10 +45,18 @@ It rewrites `tokenize` COMMENT tokens and `ast` docstring nodes and nothing else
 rewrite changes the code's AST or the result will not parse, and both refusals are pinned against
 planted corruptions in `scripts/test_doc_sweep.py`.
 
-Run it per repo, not at the root, until you have read what it would do. It skips the published
-canon, `_secret`, vendored trees, generated agent instructions, and itself — and it applies those
-exclusions to a path typed on the command line as well as to one the walk found, so pointing it at
-a canon file skips the file and says so.
+Run it per repo, not at the root, until you have read what it would do. It skips `_secret`,
+vendored trees, generated agent instructions, and itself — and it applies those exclusions to a path
+typed on the command line as well as to one the walk found, so pointing it at an excluded file skips
+the file and says so.
+
+**It no longer skips pharos wholesale.** `SKIP_PATHS` is down to `agience-pharos/research` and
+`agience-pharos/learn`; the other four trees are swept like any repo. Those two are held back for
+different reasons — `research/` carries measured figures whose qualifiers a mechanical pass cannot
+be trusted around, and `learn/` is 55 HTML lessons this tool does not rewrite. `SKIP_PATHS` exists
+because `SKIP_DIRS` is matched against single path components, so a two-segment entry there silently
+matches nothing; if you add an exclusion with a `/` in it, it goes in `SKIP_PATHS` or it does not
+work, and `scripts/test_doc_sweep.py` pins that.
 
 **Python is rewritten; the C family is only ranked.** `.ts`, `.tsx`, `.js`, `.jsx`, `.mjs`, `.cjs`,
 `.cs`, `.c` and `.h` are scanned for flags and never written: their comments are found by a scanner
@@ -125,6 +133,15 @@ REWRITE, in place:
 KEEP:
 - a measurement that justifies a decision ("measured 2.048s vs 0.018s, so
   this uses 127.0.0.1") — deleting it invites the change back
+- every figure WITH its qualifier: simulated, not yet wired, measured
+  before the repair. A number that loses its condition is worse than one
+  deleted
+- every statement of a limit — "what this does NOT establish", "not yet
+  measured", "halts one node short". ALL-CAPS survives inside these; strip
+  the shouting from a rule, never from an admission
+- a glyph a legend in the same file defines. That is a notation, not
+  decoration: keep it, or replace it with the word it stands for, but never
+  just delete it — dropping a state marker silently changes an item's state
 - present constraints, stated positively
 - correction banners: where a document records that it was wrong, that IS
   the content
@@ -155,11 +172,25 @@ code actually does. Someone else verifies those.
 Do not run git. Do not commit. Do not run the suite — the harness does that
 once per repo, after the batch.
 
+Before you report, prove you lost no number. Every measured figure in this
+workspace's prose traces to a claim, and a figure that quietly vanishes in a
+tidy-up is the one defect this pass can cause that nothing downstream catches:
+
+    git diff -U0 -- <file> | grep '^-' \
+      | grep -oE '[0-9]+\.[0-9]+|[0-9]+%|[0-9]+/[0-9]+' | sort -u > before.txt
+    grep -oE '[0-9]+\.[0-9]+|[0-9]+%|[0-9]+/[0-9]+' <file> | sort -u > after.txt
+    comm -23 before.txt after.txt      # must print nothing
+
+A number that loses its qualifier is worse than one deleted, so when you move a
+figure, its condition moves with it: *simulated*, *not yet wired*, *measured
+before the repair*.
+
 Report, and nothing else:
 1. FILE
 2. FLAGS: n before -> n after, from a second --flags run
 3. KEPT: each flag you deliberately left, with why
-4. SUSPECTED STALE: file:line + what the code actually does, or "none"
+4. NUMBERS LOST: the comm output, which must be empty
+5. SUSPECTED STALE: file:line + what the code actually does, or "none"
 ```
 
 **Edited in place, never printed back.** Handing the whole file through the report doubles the cost
@@ -240,6 +271,17 @@ before-reading there is no way to say so rather than guess it.
   or quoting the exact prior wording — run the file's test suite after every rewrite (this skill
   already says to); do not treat a green `ast.parse` and a matching `code_shape` as sufficient on
   their own, since neither one reads assertion bodies.
+
+- **A stale claim reads exactly like provenance.** The pharos pass found four documents asserting
+  that a section "was never written" when it had been present all along, and a vocabulary document
+  accusing a README of printing two licences backwards when the README matched the actual `LICENSE`
+  files. Both had survived earlier passes because a confident, specific, internal-sounding statement
+  looks like something to preserve. Before deleting a claim as stale — or acting on one — check the
+  tree. An agent told a false fact will act on it faithfully.
+- **Shared boilerplate must not be handed to parallel agents.** Four pharos documents carried an
+  identical cross-reference table. Four agents editing it independently would have produced four
+  divergent versions of the same block. Fix a duplicated block once, centrally, and tell every agent
+  to leave it alone.
 
 ## Report
 

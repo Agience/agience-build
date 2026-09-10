@@ -9,13 +9,13 @@ Documents move in **one direction**, and nothing is deleted:
 
 ```
       a repo  ──┐
-                ├──▶  _scratch  ──┬──▶  agience-pharos      canon, LEDGER-gated
+                ├──▶  _scratch  ──┬──▶  agience-pharos      the published, public corpus
     a session ──┘                 ├──▶  _scratch/CURRENT    still open
                                   └──▶  _archive            set down, dated, never deleted
 ```
 
 **This pass decides placement only.** Change no code and rewrite no prose. Its companion,
-`doc-current-state`, rewrites a document's prose — and pharos is LEDGER-gated, so it takes finished
+`doc-current-state`, rewrites a document's prose — and pharos is published and public, so it takes finished
 prose. **Run the prose pass BEFORE promoting, never after.**
 
 ## The two lanes
@@ -35,8 +35,8 @@ the other leaves a document citing scripts that are no longer beside it.
 1. **`CURRENT/` is `.md` only.** The directory listing is the index; `README.md` is the annotation.
 2. **One thread = one document**, and optionally one `lab/` subdirectory of the same name.
 3. **Nothing is deleted.** Archiving is a recorded move.
-4. **Every move goes in `agience-pharos/working/LEDGER.md`.** A move that is not in the ledger did
-   not happen.
+4. **Every promotion updates the destination tree's `README.md` index.** That index is what makes a
+   document reachable; a promoted file nothing links to is a file nobody finds.
 5. **Prose pass before promotion**, never after.
 6. **Generated data is never tracked; pinned fixtures always are.** The test is: *does regenerating
    it destroy its purpose?* No → it is output, gitignore it. Yes → it is a fixture, track it.
@@ -118,26 +118,30 @@ before calling the thread open: read the code, not the document's own expectatio
 
 **PROMOTE → `agience-pharos/<section>/`**:
 
+Pharos has six trees, and every one of them is written for a reader **outside the company**:
+
 | section | takes |
 |---|---|
-| `status/` | verified current state, measured audits, runbooks |
-| `story/` | the public narrative |
-| `genesis/` | the design canon — architecture that governs code |
-| `theory/` | the physics and information lineage, and durable method |
-| `vision/` | forward direction, not yet built |
-| `features/` | live capability notes |
-| `working/` | in-progress design records **with a finish line**, plus the LEDGER |
-| `go-to-market/` | GTM material, the papers, the distribution set |
-| `evangalist/` | GTM narrative sources (mixed confidentiality — read its README first) |
-| `dev-legacy/` | pre-GENESIS history. **Read-only — never a promotion target**, and never a source without a fresh measurement |
+| `start/` | the three ways in — the headline, the narrative, the complete picture. Nothing else belongs here |
+| `learn/` | the Entroptics course |
+| `features/` | capability that works today, capability by capability |
+| `design/` | how the system that exists is built — the specification, the components, the vocabulary |
+| `research/` | the papers and the measurements behind the claims |
+| `vision/` | what is intended and **not yet built** |
 
-A document with no finish line does not belong in `working/`; it is either canon (`genesis/`) or it
-stays in `_scratch`.
+**The `design/` ÷ `vision/` line is the one that matters.** `design/README.md` opens by saying it
+describes the system that exists. Anything not built, not GA, or not working yet belongs in
+`vision/` regardless of how finished its design is — a device fleet, a transport hardening plan, a
+roadmap. Putting unbuilt work in `design/` is how a corpus starts claiming hardware it does not have.
 
-Every promoted document gets a state marker — CANON · CURRENT · STALE · SUPERSEDED · HISTORICAL ·
-DRAFT · UNKNOWN-VALUE — **a banner naming where it came from, when, and by which pass**, its body
-otherwise unedited, and a row in `agience-pharos/working/LEDGER.md`. Update the section README if
-the section has one.
+There is no `working/` tree. A document with no finish line either states something durable, in
+which case it is promoted, or it stays in `_scratch`.
+
+A promoted document declares its own status in its own first screen, and gets a row in its tree's
+`README.md`. **It carries no provenance banner**: pharos is read by people outside the company, and
+"promoted from `_scratch/CURRENT` by the 2026-09-09 pass" is internal bookkeeping addressed to
+nobody they are. Where a document describes something unbuilt, it says so plainly in its own opening
+words instead.
 
 **IN-PROGRESS → `_scratch/CURRENT/`.** One flat directory, no dating, no per-topic subdirectories —
 a worklist, not an archive. `README.md` lists each document and its open thread in one line,
@@ -156,7 +160,7 @@ path, and one line on why it was set down, **naming the successor where there is
 3. **Wait for approval on the table.**
 4. **Execute.** `git mv` inside a repo; `git rm --cached` + copy across repos, so history stays
    where it was written.
-5. **Update** the pharos LEDGER, the section READMEs, `CURRENT/README.md`, and the new
+5. **Update** the destination tree's `README.md`, `CURRENT/README.md`, and the new
    `_archive/<dated>/README.md`.
 6. **Fix inbound links.** Grep the workspace for every moved filename and repoint what you find.
    Report any left verbatim — dated records of a completed migration are left as-is by convention,
@@ -168,5 +172,5 @@ path, and one line on why it was set down, **naming the successor where there is
 ## Report before moving
 
 List every proposed move as `from → to`, with the one-line reason and the state you are assigning.
-**Get agreement before writing.** A wrong promotion puts a false statement into canon, and canon is
-what everything else is checked against.
+**Get agreement before writing.** A wrong promotion publishes a false statement to the public, and
+pharos is what everything else is checked against.

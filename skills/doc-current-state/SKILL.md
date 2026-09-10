@@ -10,28 +10,41 @@ does, why it is built that way, and how to use it. **Change no code — this pas
 
 Two surfaces sweep together: the tree's prose, and the Claude memory for the same project.
 
-## ⛔ Where this pass does NOT apply
-
-**`agience-pharos/status/` and `agience-pharos/design/` are exempt from the deletions below.**
-
-Those trees are *built* on dated, attributed, provenance-marked claims. `status/README.md` requires
-every claim to carry ⚑ *measured in this pass*, 📄 *read out of a named source*, or ⚠ *unverified but
-carried*, and states that an unmarked flat statement is a document that needs a pass. The rule there
-is **"date a claim, or maintain it"** — a dated claim stays true forever and needs no re-check.
-
-Applying the Delete list to those trees destroys exactly the provenance they exist to carry. This
-pass is calibrated for **code docstrings and repo READMEs**.
+## Where this pass does NOT apply
 
 **Never swept, in any workspace:**
 
 - **`_archive/` and anything under it.** An archive is a dated record of what was true then.
   Narration, glyphs and superseded facts are the point; rewriting one destroys the record.
-- **The published canon (pharos).** It is LEDGER-gated and carries its own state markers, so a prose
-  edit there without a LEDGER row puts the two out of step. Clean a document up in `_scratch`
-  **before** it is promoted, not after.
+- **Dated records and benches** — a ledger, a build log, a live worksheet under `_scratch/CURRENT/`,
+  one-shot code under `_scratch/lab/`. The dates are the content and a date sweep destroys them.
+  Recognise them by what they are for, not by where they live.
 - **Correction banners anywhere.** Where a document records that it was previously wrong, that
   banner is the most useful thing on the page. Never rewrite a wrong statement into a right one
   silently — the correction is the content.
+
+## agience-pharos is a published, external-facing corpus
+
+Pharos was reshaped for public release. It is no longer LEDGER-gated — there is no `working/`
+directory, no `LEDGER.md`, and no `status/` tree — and it is **swept like any other repository**,
+with one difference that outranks everything else in this skill:
+
+**Its statements of a limit are the most credible writing in the corpus, and the Delete list below
+must never reach them.** `⚠ What this does NOT establish`, `⚠ What is not yet measured`, `⛔ The
+strongest objection to this document`, the `◧` mandatory-qualifier markers, and every ALL-CAPS
+negation inside one (`does NOT establish`, `is NOT back-filled`) are load-bearing. So is any glyph a
+legend defines in the same file — `vision/ROADMAP-AGIENCE.md` defines five state markers in its own
+first table, and stripping them would silently promote or demote roadmap items.
+
+Its six trees are `start/`, `learn/`, `features/`, `design/`, `research/` and `vision/`. Because it
+is external-facing, three deletions matter more here than anywhere else: dated attributions
+(`[John, 2026-08-24]`), pointers into documents that are not published (`_scratch`, `_archive`,
+`CLAIMS.md`, a pruned sibling), and internal machine names.
+
+**Verify a claim before deleting it as stale.** A pass over pharos found four documents asserting
+that a section "was never written" when it had been there all along, and a naming document accusing
+a README of stating two licences backwards when the README matched the actual `LICENSE` files. Both
+survived because they read like provenance. Check the tree, not the prose.
 
 ## Keep
 
@@ -66,6 +79,10 @@ pass is calibrated for **code docstrings and repo READMEs**.
   than left to be discovered", "do NOT read that as…". State the rule; drop the defence of it.
 - **Emphasis glyphs and shouting.** `⛔ ⚠ ⭐ ✅ 🚫`, and ALL-CAPS sentences or headers. Ordinary
   prose, ordinary case. Reserve capitals for identifiers that are genuinely capitalised.
+  **Two exceptions, and they are absolute.** A glyph that a legend in the same file defines is a
+  notation, not decoration — keep it, or replace it with the word it stands for; never just delete
+  it. And a glyph or capital inside a statement of a limit stays: strip the alarm from a rule, never
+  from an admission.
 - **Migration scaffolding.** Notes addressed to whoever was mid-move, once the move is done.
 - **Forward-looking promises.** "the follow-up lane that renames this", "when D6 completes it",
   "this becomes X in a later pass". If it is not true now, it does not belong.
