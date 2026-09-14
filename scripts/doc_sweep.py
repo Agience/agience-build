@@ -385,8 +385,10 @@ def excluded(path: str) -> str:
     """Why this file is not swept, or "" if it is.
 
     Applied to a named file as well as to a walked one. A path given on the command line reaches
-    the same exclusions as one discovered by the walk, so pointing the tool at
-    `agience-pharos/status/CURRENT.md` skips it and says so rather than rewriting the canon.
+    the same exclusions as one discovered by the walk, so pointing the tool at a file under
+    `agience-pharos/research` or `agience-pharos/learn` skips it and says so rather than
+    rewriting canon. (The example here used to be `agience-pharos/status/CURRENT.md`; the
+    2026-09-08 public prune removed that tree, so it no longer demonstrates anything.)
     """
     posix = path.replace("\\", "/")
     parts = posix.split("/")

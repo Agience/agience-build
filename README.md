@@ -25,13 +25,18 @@ python scripts/install_agent_env.py --adopt    # bring an edit made at the desti
 Edit them here and install outward. An edit made at the destination is lost on the next install, and
 `--adopt` is how one is brought back.
 
+**The skills carry no scripts and name no paths.** Each one states the invariant and how to discover
+the tree on the day it runs; the sweeps are composed per run. A measurement that earns permanence
+becomes a gate with a paired test, not a scanner a skill calls.
+
 ## Skills
 
 | skill | what it decides |
 |---|---|
-| [`doc-triage`](skills/doc-triage/SKILL.md) | **where** a document lives — promoted, parked as live work, or set down. Placement only; it rewrites no prose |
+| [`doc-triage`](skills/doc-triage/SKILL.md) | **where** a document lives — promoted to the corpus, parked in `_scratch/CURRENT` as live work, or set down in `_archive`. This is the working-floor cleanup pass. Placement only; it rewrites no prose |
 | [`doc-current-state`](skills/doc-current-state/SKILL.md) | **how** a document reads — state what is true now, drop the change history. Prose only; it changes no code |
-| [`doc-sweep`](skills/doc-sweep/SKILL.md) | the same current-state pass at workspace scale: a mechanical pre-pass, then a ranked worklist handed out one file at a time |
+| [`doc-sweep`](skills/doc-sweep/SKILL.md) | the same current-state pass at workspace scale: rank the tree, cut the list, hand out one file at a time behind a code-digest gate |
+| [`tighten`](skills/tighten/SKILL.md) | the recurring technical hygiene pass — drift, shadows, moved paths, unpropagated fixes, dangling work. Code and architecture; not a doc-placement pass |
 
 ## Hooks — the memory lane
 
@@ -61,7 +66,7 @@ All report by default; writing takes a flag.
 | [`fleet_guard.py`](scripts/fleet_guard.py) | the three ways concurrent agents corrupt a shared checkout, made hard to do by accident | `status` · `preflight <repo>` · `release` |
 | [`mcp_config.py`](scripts/mcp_config.py) | writes `.vscode/mcp.json` into each repo. The bearer token is a VS Code `${input:}` and is never written to disk | `--write` · `--check` |
 | [`import_workspace_to_mantle.py`](scripts/import_workspace_to_mantle.py) | sends the workspace's prose to the active store, covering documents the edit hooks never saw | `--run` · `--only` · `--force` · `--limit` |
-| [`doc_sweep.py`](scripts/doc_sweep.py) | the mechanical half of the prose pass: safe deletions applied, everything else flagged for a person | `--write` · `--flags` · `--worklist` |
+| [`doc_sweep.py`](scripts/doc_sweep.py) | standalone bulk de-shouting: safe deletions applied, everything else flagged for a person. No skill depends on it | `--write` · `--flags` · `--worklist` |
 
 ### Working alongside other agents
 
