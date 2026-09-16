@@ -85,15 +85,13 @@ commit then lands under a message that does not describe it.
 
 ## The views
 
-Five editor workspaces, one per role. Each is a window onto the same disk and copies nothing.
+Three editor workspaces, one per role. Each is a window onto the same disk and copies nothing.
 
 | view | for |
 |---|---|
 | [`vscode/agience.code-workspace`](vscode/agience.code-workspace) | platform developer / architect — the services and the canon behind them |
-| [`vscode/ops.code-workspace`](vscode/ops.code-workspace) | operator — what runs, where it runs, and what ships |
 | [`vscode/entroptics.code-workspace`](vscode/entroptics.code-workspace) | researcher — the entroptics repos and the working floor |
 | [`vscode/mantle.code-workspace`](vscode/mantle.code-workspace) | the lattice slice |
-| [`vscode/agience-all.code-workspace`](vscode/agience-all.code-workspace) | everything, for when the role is not yet clear |
 
 They open the workspace **root** as their first folder, so their paths are relative to
 [`vscode/`](vscode/) and read `../..` outward. Adding a repo means adding a folder entry; nothing
