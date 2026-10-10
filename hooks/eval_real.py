@@ -49,10 +49,6 @@ CASES = [
     # ── answerable only from the BODY: the vector arm's job ───────────────────────────────
     ("when should I use mantle instead of local memory", f"{REPO}/CLAUDE.md", "local memory"),
     ("how is authorization done in this store", f"{REPO}/README.md", "authorization"),
-    ("what is banned from retrieval and why",
-     f"{SCRATCH}/RETRIEVAL-THE-ENTROPTICS-WAY.md", "Cosine similarity"),
-    ("what did we decide about stemming",
-     f"{SCRATCH}/RETRIEVAL-THE-ENTROPTICS-WAY.md", "stemmer"),
     ("how does an artifact's content get stored",
      f"{REPO}/src/mantle/services/content_service.py", "content"),
     ("what keeps content out of the lattice document",

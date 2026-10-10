@@ -58,7 +58,7 @@ _CONTENT_TYPE_BY_SUFFIX = {
 #: "nothing in them was written by a person". `node_modules` was the only one named, and it is not
 #: the only one that exists.
 #:
-#: Measured that day by walking the workspace with this very function: `entroptics-mass-gap` offered
+#: Measured that day by walking the workspace with this very function: one repository offered
 #: **9,874** files for capture, of which **9,658 were under `research/lean/.lake/packages`** — the
 #: downloaded Mathlib and its siblings. 9,386 `.lean` files of third-party library source, plus
 #: `.npy` binaries. That is 75% of every capturable file in the workspace, and none of it is this

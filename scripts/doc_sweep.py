@@ -103,7 +103,7 @@ SKIP_DIRS = {
     "node_modules", "dist", "build", ".git", "obj", "bin", ".venv", "venv", "__pycache__",
     ".pytest_cache", ".ruff_cache", ".next", "_archive", "_ci-work", "site-packages",
     ".mypy_cache", "htmlcov", ".tox", "vendor",
-    #: Lean's package tree under `entroptics-mass-gap/research/lean` — mathlib and its
+    #: Lean's package tree (`.lake`) — mathlib and its
     #: dependencies, vendored rather than written here.
     ".lake",
     #: `agience-pharos` WAS excluded whole. The reason was `status/` — a tree whose every claim had

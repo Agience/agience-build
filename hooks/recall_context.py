@@ -16,7 +16,7 @@ They did not work, and the record is worth keeping:
 - The operator exclusion kept transcripts out of every recall. A transcript is often the only
   record of why something was done; excluding it decides in advance what may be known.
 - Six principled replacements for the score floor were tried and all six failed, each for its own
-  reason. See `entroptics-discipline` in local memory before retrying any of them.
+  reason.
 
 None of that is a tuning problem. Deciding HOW MUCH to return is the aperture's job: its window is
 "a MINIMUM, not a clock -- it keeps at least that many frames and MORE while the signal is still

@@ -66,7 +66,6 @@ _URL = f"http://{HOST}:{PORT}"
 _ROOT = workspace_root()
 _REPOS = str(_ROOT) if _ROOT else ""
 PRISM_SRC = os.environ.get("PRISM_SRC", f"{_REPOS}/agience-prism/py/src")
-ENTROPTICS_SRC = os.environ.get("ENTROPTICS_SRC", f"{_REPOS}/entroptics/src")
 OPTICS_PATH = os.environ.get("OPTICS_PATH", f"{_REPOS}/agience-ember/src/ember/optics.py")
 
 _model = None
@@ -107,11 +106,9 @@ def _load_cut():
     "Composed, the pair needs no constant at all."
 
     It reads through prism's injected `read` contract, and the registered instrument is
-    `ember.optics` -- which exists because entering entroptics' front door applies an entropy
-    fold guard that destroys a sparse carrier (measured: 256 channels folded to F_eff = 1 and
-    reported as K_signal = 1, indistinguishable at the call site from one real mode). So the
-    wrapper is not optional and reaching past it to entroptics is the documented way to get a
-    wrong answer that looks right.
+    `ember.optics`, the one seam to the instrument: the library's own front door applies an entropy
+    fold guard that collapses a sparse carrier (256 channels read as K_signal = 1), so the wrapper is
+    not optional. The instrument itself is the installed package.
 
     Loaded by path, not by package: `import ember.optics` pulls `ember/__init__.py` and its
     tree -- measured at over 600s, which is why this looked impossible in a hook. `optics.py`
@@ -124,9 +121,8 @@ def _load_cut():
         return _cut
     import importlib.util
     os.environ.setdefault("EMBER_ADAPTIVE_MODE", "on")
-    for path in (PRISM_SRC, ENTROPTICS_SRC):
-        if path and path not in sys.path:
-            sys.path.insert(0, path)
+    if PRISM_SRC and PRISM_SRC not in sys.path:
+        sys.path.insert(0, PRISM_SRC)
     spec = importlib.util.spec_from_file_location("ember_optics", OPTICS_PATH)
     optics = importlib.util.module_from_spec(spec)
     sys.modules["ember_optics"] = optics

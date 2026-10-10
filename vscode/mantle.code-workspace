@@ -21,10 +21,6 @@
       "path": "../../agience-observe"
     },
     {
-      "name": "entroptics-llm",
-      "path": "../../entroptics-llm"
-    },
-    {
       "name": "agience-pharos",
       "path": "../../agience-pharos"
     }

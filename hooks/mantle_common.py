@@ -110,7 +110,7 @@ MANTLE_TARGET_NAME = _TARGET.get("name") or os.environ.get("MANTLE_TARGET") or "
 # merge had already removed:
 #
 #     capture_commits.DEFAULT_REPOS   the commit-capture arm had nothing to read
-#     embedder._REPOS                 PRISM_SRC/ENTROPTICS_SRC/OPTICS_PATH all derive from it
+#     embedder._REPOS                 PRISM_SRC/OPTICS_PATH derive from it
 #     eval_real.SCRATCH / .REPO       the recall eval scored against files that were not there
 #
 # Resolution order, most specific first — the same shape `_setting` already uses:
@@ -337,7 +337,7 @@ def recall(query_text: str, *, size: int = 5) -> List[Dict[str, Any]]:
     """
     # The vector arm is off by default, and the reason is canon rather than breakage.
     #
-    # `agience-pharos/genesis/RETRIEVAL-THE-ENTROPTICS-WAY.md` (state: CANON) bans cosine by name:
+    # The retrieval canon in `agience-pharos` bans cosine by name:
     # "A chosen metric. Assumes the space is isotropic and that angle is nearness. Nothing derives
     # it." A client embedder exists for exactly one purpose - to feed `ORDER_SEMANTIC`, the cosine
     # arm - so keeping it means running the one ranker the design forbids.

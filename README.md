@@ -90,7 +90,6 @@ Three editor workspaces, one per role. Each is a window onto the same disk and c
 | view | for |
 |---|---|
 | [`vscode/agience.code-workspace`](vscode/agience.code-workspace) | platform developer / architect — the services and the canon behind them |
-| [`vscode/entroptics.code-workspace`](vscode/entroptics.code-workspace) | researcher — the entroptics repos and the working floor |
 | [`vscode/mantle.code-workspace`](vscode/mantle.code-workspace) | the lattice slice |
 
 They open the workspace **root** as their first folder, so their paths are relative to
@@ -114,7 +113,7 @@ Licensed under Apache-2.0 — see [`LICENSE`](LICENSE) and [`NOTICE`](NOTICE). C
 
 ## Declaration of generative AI use
 
-The author used Anthropic's Claude Opus (versions 4.8 and 5) in the preparation of this work. Its
+The author used Anthropic's Claude Opus (versions 4.8, 5, and 5.5) in the preparation of this work. Its
 contribution was to write code, and to generate and validate content. The ideas, the construction
 and the claims are the author's. No other generative AI tool was used. The author reviewed and
 edited all output and takes full responsibility for the content of this publication.
